@@ -4928,8 +4928,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 500, y: 0}
+  m_AnchoredPosition: {x: 0, y: -150}
+  m_SizeDelta: {x: 900, y: 900}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1970903790
 MonoBehaviour:
@@ -4944,7 +4944,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
-  m_VerticalFit: 2
+  m_VerticalFit: 0
 --- !u!114 &1970903791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5022,6 +5022,7 @@ MonoBehaviour:
   cellPrefab: {fileID: 2010682617913064041, guid: 004a2c92d1fb7564d9f1bf163c8e9247, type: 3}
   gridLayout: {fileID: 1970903791}
   gridContainer: {fileID: 1970903789}
+  gridSize: 500
   regionColors:
   - {r: 0.99, g: 0.8, b: 0.8, a: 1}
   - {r: 0.99, g: 0.93, b: 0.8, a: 1}
@@ -5046,8 +5047,8 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: -1
   m_MinHeight: -1
-  m_PreferredWidth: 500
-  m_PreferredHeight: 10
+  m_PreferredWidth: 900
+  m_PreferredHeight: 900
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1

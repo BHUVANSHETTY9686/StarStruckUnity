@@ -22,6 +22,10 @@ namespace StarLogicGrid.Core
         [Tooltip("Container RectTransform for the grid")]
         [SerializeField] private RectTransform gridContainer;
         
+        [Header("Grid Size Settings")]
+        [Tooltip("Fixed grid size in pixels (square). Set this to your desired grid dimension.")]
+        [SerializeField] private float gridSize = 500f;
+        
         [Header("Region Colors")]
         [Tooltip("Color palette for regions - should have at least 8 colors")]
         [SerializeField] private Color[] regionColors = new Color[]
@@ -72,7 +76,7 @@ namespace StarLogicGrid.Core
             // Destroy all child objects
             for (int i = gridContainer.childCount - 1; i >= 0; i--)
             {
-                DestroyImmediate(gridContainer.GetChild(i).gameObject);
+                Destroy(gridContainer.GetChild(i).gameObject);
             }
         }
         
@@ -101,33 +105,49 @@ namespace StarLogicGrid.Core
                 return;
             }
             
-            int size = currentPuzzle.gridSize;
-            cellViews = new CellView[size, size];
+            int puzzleSize = currentPuzzle.gridSize;
+            cellViews = new CellView[puzzleSize, puzzleSize];
             
-            // Calculate cell size based on container
-            float containerSize = Mathf.Min(gridContainer.rect.width, gridContainer.rect.height);
+            // Get fixed cell size based on puzzle size
+            float cellSize = GetCellSizeForPuzzle(puzzleSize);
             
-            // If container size is 0 (not laid out yet), use a default
-            if (containerSize <= 0)
-            {
-                containerSize = 500f;
-            }
+            // Set spacing to 0 to avoid gaps
+            gridLayout.spacing = Vector2.zero;
+            gridLayout.padding = new RectOffset(0, 0, 0, 0);
             
-            float cellSize = (containerSize - (gridLayout.spacing.x * (size - 1))) / size;
+            Debug.Log($"GridManager: Puzzle = {puzzleSize}x{puzzleSize}, Cell size = {cellSize}");
             
             // Configure grid layout
-            gridLayout.constraintCount = size;
+            gridLayout.constraintCount = puzzleSize;
             gridLayout.cellSize = new Vector2(cellSize, cellSize);
             gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+            gridLayout.startCorner = GridLayoutGroup.Corner.UpperLeft;
+            gridLayout.startAxis = GridLayoutGroup.Axis.Horizontal;
+            gridLayout.childAlignment = TextAnchor.MiddleCenter;
             
             // Create cells row by row
-            for (int r = 0; r < size; r++)
+            for (int r = 0; r < puzzleSize; r++)
             {
-                for (int c = 0; c < size; c++)
+                for (int c = 0; c < puzzleSize; c++)
                 {
                     CreateCell(r, c);
                 }
             }
+        }
+        
+        /// <summary>
+        /// Returns the fixed cell size for a given puzzle size.
+        /// 5x5 = 150px, 6x6 = 120px, 8x8 = 100px
+        /// </summary>
+        private float GetCellSizeForPuzzle(int puzzleSize)
+        {
+            return puzzleSize switch
+            {
+                5 => 150f,
+                6 => 120f,
+                8 => 100f,
+                _ => 100f  // Default fallback
+            };
         }
         
         /// <summary>
